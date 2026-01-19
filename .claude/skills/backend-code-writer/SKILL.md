@@ -1,6 +1,6 @@
 ---
 name: backend-code-writer
-description: Clean Architecture와 DDD 기반 백엔드 코드 작성 가이드. 백엔드 코드 작성, 새 기능 구현, Use Case 설계, 도메인 모델링, 테스트 코드 작성, 인프라 레이어 구현 시 사용. Java/Kotlin 백엔드 프로젝트에서 코드 품질과 아키텍처 일관성을 유지하기 위한 가이드라인 제공.
+description: Provides Clean Architecture and DDD-based backend code writing guidance. Used for backend code implementation, new feature development, Use Case design, domain modeling, test code writing, and infrastructure layer implementation. Maintains code quality and architectural consistency in Java/Kotlin backend projects.
 context: fork
 agent: backend-architect
 user-invocable: true
