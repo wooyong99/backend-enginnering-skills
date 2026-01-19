@@ -87,7 +87,7 @@ infrastructure/
 
 ### 1. Adapter
 
-**역할**: Core Layer의 Port 인터페이스를 구현하여 외부 시스템과 도메인을 연결
+**역할**: Application Layer의 Port 인터페이스를 구현하여 외부 시스템과 도메인을 연결
 
 **책임**:
 
@@ -104,7 +104,7 @@ infrastructure/
 /**
  * PortOne 결제 시스템 어댑터
  *
- * Core Layer의 PaymentProcessor 인터페이스를 구현하여
+ * Application Layer의 PaymentProcessor 인터페이스를 구현하여
  * PortOne API와 통신합니다.
  */
 @Component
@@ -965,7 +965,7 @@ public class PaymentTimeoutException extends PortOneException {
 ### 전체 흐름
 
 ```
-1. Core Layer (Use Case)
+1. Application Layer (Use Case)
    ↓ Port 인터페이스 호출
 
 2. Adapter
@@ -984,14 +984,14 @@ public class PaymentTimeoutException extends PortOneException {
    ↓ Response → 도메인 변환 (Mapper)
    ↓ 예외 변환
 
-7. Core Layer (Use Case)
+7. Application Layer (Use Case)
    ↓ 비즈니스 로직 처리
 ```
 
 ### 코드 흐름 예시
 
 ```java
-// 1. Core Layer - Use Case
+// 1. Application Layer - Use Case
 @UseCase
 @RequiredArgsConstructor
 public class ProcessPaymentUseCase {

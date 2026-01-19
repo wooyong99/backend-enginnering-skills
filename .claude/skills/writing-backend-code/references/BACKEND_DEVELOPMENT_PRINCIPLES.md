@@ -29,9 +29,9 @@
 
 ```
 변화 빈도:
-높음 → API Layer (인터페이스, 요청/응답 형식)
+높음 → Presentation Layer (인터페이스, 요청/응답 형식)
 중간 → Infrastructure Layer (외부 시스템, 기술 스택)
-낮음 → Core Layer (비즈니스 규칙, 도메인 로직)
+낮음 → Domain Layer (비즈니스 규칙, 도메인 로직)
 ```
 
 **적용 방법**:
@@ -89,17 +89,16 @@
              │ 호출
              ↓
 ┌──────────────────────────────────────┐
-│         Core Layer                   │  ← 비즈니스 로직
-│  ┌────────────────────────────────┐  │
-│  │ Application (Use Cases)        │  │
-│  │ - 흐름 제어                    │  │
-│  │ - 트랜잭션 관리                │  │
-│  └────────────────────────────────┘  │
-│  ┌────────────────────────────────┐  │
-│  │ Domain (Business Rules)        │  │
-│  │ - 엔티티                       │  │
-│  │ - 비즈니스 규칙                │  │
-│  └────────────────────────────────┘  │
+│  Application Layer (Use Cases)       │  ← 유스케이스/흐름 제어
+│  - 흐름 제어, 트랜잭션 관리          │
+│  - Port 인터페이스 정의              │
+└────────────┬─────────────────────────┘
+             │ 호출
+             ↓
+┌──────────────────────────────────────┐
+│  Domain Layer (Business Rules)       │  ← 비즈니스 규칙
+│  - 엔티티, 값 객체                   │
+│  - 비즈니스 규칙, 도메인 서비스      │
 └────────────┬─────────────────────────┘
              ↑ 구현
     ┌────────┼────────┐
@@ -151,14 +150,14 @@ Controller/Handler {
 }
 ```
 
-### 2. Core Layer (핵심 레이어)
+### 2. Application Layer + Domain Layer (핵심 레이어)
 
 **구성**:
 
-- **Application**: Use Case(흐름 제어), Command/Result(입출력), Port(인터페이스)
-- **Domain**: Entity(비즈니스 엔티티), Value Object(값 객체), Domain Service(도메인 서비스)
+- **Application Layer**: Use Case(흐름 제어), Command/Result(입출력), Port(인터페이스), Validator(복합 검증), Policy(복잡한 정책)
+- **Domain Layer**: Entity(비즈니스 엔티티), Value Object(값 객체), Domain Service(도메인 서비스), Policy(도메인 정책)
 
-#### Application 서브레이어
+#### Application Layer
 
 **역할**:
 
@@ -224,7 +223,7 @@ Controller/Handler {
    - 정책이 자주 변경됨
    ```
 
-#### Domain 서브레이어
+#### Domain Layer
 
 **역할**:
 
@@ -289,7 +288,7 @@ Controller/Handler {
 
 **역할**:
 
-- Core Layer의 Port 구현
+- Application Layer의 Port 구현
 - 외부 시스템 연동
 - 기술적 세부사항 처리
 
@@ -310,7 +309,7 @@ Controller/Handler {
 
 ❌ 하지 말아야 할 것:
 - 비즈니스 로직 포함
-- Core Layer 객체 직접 수정
+- Domain Layer 객체 직접 수정
 - 암묵적 상태 변경
 ```
 
@@ -710,7 +709,7 @@ External System
 **Port 정의 예시**:
 
 ```
-// Core Layer
+// Application Layer (Port Interface)
 interface PaymentProcessor {
     PaymentResult process(PaymentRequest request);
     PaymentStatus checkStatus(String transactionId);
