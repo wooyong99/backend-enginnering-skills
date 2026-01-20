@@ -1,161 +1,237 @@
 ---
 name: spec-to-tasks
-description: 확정된 요구사항, 정책, 흐름, 상태 정보를 입력받아 Clean Architecture 레이어별 개발 태스크로 정형화하는 스킬. 요구사항 분석 완료 후 구현 전 태스크 분해가 필요할 때 사용. Domain/Application/Infrastructure/Presentation 레이어별로 Entity, VO, Policy, UseCase, Port, Repository, Adapter, Controller 등의 구현 태스크를 체계적으로 도출한다.
+description: Converts finalized requirements into structured development tasks. Use when requirements analysis is complete and policies/flows are clearly defined. Input is confirmed requirements with clear domain concepts, output is categorized tasks (API tasks, Domain tasks, Repository/Policy/Event tasks). Triggers when user says "태스크 생성", "개발 태스크로 변환", "구현 태스크 정리", or after requirements-analyst produces confirmed output.
+user-invocable: true
 ---
 
 # Spec to Tasks
 
-정리된 요구사항을 개발 태스크로 정형화하는 스킬.
+확정된 요구사항을 Clean Architecture 레이어별 개발 태스크로 변환한다.
 
-## Input Requirements
+## Prerequisites
 
-이 스킬을 사용하기 전 다음 정보가 확정되어 있어야 한다:
-
-| 항목 | 설명 | 예시 |
-|------|------|------|
-| 확정된 요구사항 | 구현할 기능 명세 | "프리미엄 회원은 무제한 다운로드" |
-| 정책/규칙 | 비즈니스 규칙, 제약조건 | "일일 다운로드는 자정에 초기화" |
-| 흐름 | Use Case 시나리오 | "1. 회원 등급 확인 → 2. 잔여 횟수 확인 → 3. 다운로드 실행" |
-| 상태 | 도메인 상태, 상태 전이 | "PENDING → APPROVED → COMPLETED" |
-
-## Output Structure
-
-태스크를 Clean Architecture 레이어 기준으로 분류한다.
-
-### 1. Domain Layer Tasks
-
-비즈니스 규칙 구현 태스크.
-
-```
-## Domain Tasks
-
-### Entity/Aggregate
-- [ ] [Entity명] 엔티티 생성
-  - 속성: [속성 목록]
-  - 불변식: [Invariant 규칙]
-
-### Value Object
-- [ ] [VO명] 값 객체 생성
-  - 속성: [속성 목록]
-  - 검증 규칙: [Validation 규칙]
-
-### Domain Policy
-- [ ] [Policy명] 정책 구현
-  - 입력: [Input 타입]
-  - 출력: [Output 타입]
-  - 규칙: [비즈니스 규칙]
-
-### Domain Event
-- [ ] [Event명] 이벤트 정의
-  - 발행 조건: [Trigger 조건]
-  - 페이로드: [Event 데이터]
-
-### Domain Service
-- [ ] [Service명] 도메인 서비스 구현
-  - 책임: [여러 Aggregate 조합 로직]
-```
-
-### 2. Application Layer Tasks
-
-Use Case 흐름 제어 태스크.
-
-```
-## Application Tasks
-
-### Use Case
-- [ ] [UseCase명] Use Case 구현
-  - Command: [입력 데이터]
-  - Result: [출력 데이터]
-  - 흐름:
-    1. [Step 1]
-    2. [Step 2]
-    3. [Step 3]
-
-### Port (Outbound)
-- [ ] [Port명] Port 인터페이스 정의
-  - 메서드: [메서드 시그니처]
-  - 목적: [외부 의존성 추상화 대상]
-```
-
-### 3. Infrastructure Layer Tasks
-
-외부 시스템 연동 태스크.
-
-```
-## Infrastructure Tasks
-
-### Repository
-- [ ] [Repository명] Repository 구현
-  - 구현 대상 Port: [Port명]
-  - 저장소: [DB/Cache 등]
-  - 쿼리:
-    - [메서드1]: [쿼리 설명]
-    - [메서드2]: [쿼리 설명]
-
-### Adapter (External API)
-- [ ] [Adapter명] Adapter 구현
-  - 구현 대상 Port: [Port명]
-  - 외부 시스템: [연동 대상]
-  - 매핑: [DTO ↔ Domain 변환]
-
-### Event Publisher/Handler
-- [ ] [Handler명] 이벤트 핸들러 구현
-  - 처리 이벤트: [Event명]
-  - 동작: [처리 내용]
-```
-
-### 4. Presentation Layer Tasks
-
-API 엔드포인트 태스크.
-
-```
-## API Tasks
-
-### Controller
-- [ ] [Controller명] Controller 구현
-  - Endpoint: [HTTP Method] [Path]
-  - Request: [Request DTO]
-  - Response: [Response DTO]
-  - 호출 UseCase: [UseCase명]
-
-### DTO
-- [ ] [DTO명] Request/Response DTO 정의
-  - 필드: [필드 목록]
-  - 검증: [Validation 규칙]
-```
+이 스킬 사용 전 다음이 준비되어야 한다:
+- 요구사항 분석 완료 (requirements-analyst 또는 동등한 분석)
+- 도메인 개념 정의 확정
+- 비즈니스 정책/규칙 명확화
+- 주요 플로우 확정
 
 ## Workflow
 
 ```
-1. 요구사항 분석
+1. 입력 요구사항 검증
    ↓
-2. 도메인 개념 추출 (Entity, VO, Policy, Event)
+2. 도메인 모델 태스크 도출
    ↓
-3. Use Case 흐름 정의
+3. Application 레이어 태스크 도출
    ↓
-4. 레이어별 태스크 도출
+4. Infrastructure 레이어 태스크 도출
    ↓
-5. 의존성 순서대로 태스크 정렬
+5. API 레이어 태스크 도출
    ↓
-6. 태스크 문서 생성
+6. 태스크 의존성 정렬
+   ↓
+7. 출력 생성
 ```
 
-### Task Ordering Rule
+## Task Derivation Rules
 
-의존성 방향에 따라 구현 순서를 결정한다:
+### 1. Domain Layer Tasks
 
-1. **Domain Layer** (의존성 없음, 먼저 구현)
-   - Value Object → Entity → Policy → Domain Service → Domain Event
+도메인 개념에서 태스크 도출:
 
-2. **Application Layer** (Domain에만 의존)
-   - Port 정의 → Use Case 구현
+| 도메인 개념 | 태스크 유형 | 예시 |
+|-------------|-------------|------|
+| 식별자 있는 개념 | Entity 생성 | `User`, `Order`, `Payment` |
+| 불변 속성 그룹 | Value Object 생성 | `Money`, `Address`, `DateRange` |
+| 도메인 불변식 | 검증 로직 구현 | `주문금액 > 0`, `재고 >= 주문수량` |
+| 상태 전이 규칙 | 상태 머신 구현 | `PENDING → CONFIRMED → SHIPPED` |
+| 복수 엔티티 조합 로직 | Domain Service 생성 | `PriceCalculator`, `InventoryChecker` |
+| 비즈니스 이벤트 | Domain Event 정의 | `OrderPlaced`, `PaymentCompleted` |
 
-3. **Infrastructure Layer** (Port 구현)
-   - Repository → Adapter → Event Handler
+### 2. Application Layer Tasks
 
-4. **Presentation Layer** (Use Case 호출)
-   - DTO → Controller
+비즈니스 플로우에서 태스크 도출:
 
-## Output
+| 플로우 특성 | 태스크 유형 | 예시 |
+|-------------|-------------|------|
+| 단일 비즈니스 연산 | Use Case 생성 | `CreateOrderUseCase` |
+| 입력 데이터 구조 | Command 정의 | `CreateOrderCommand` |
+| 출력 데이터 구조 | Result 정의 | `CreateOrderResult` |
+| 외부 시스템 의존 | Port 인터페이스 정의 | `PaymentGatewayPort` |
+| 도메인 이벤트 처리 | Event Handler 생성 | `OrderPlacedHandler` |
 
-생성되는 태스크 문서 형식: [assets/template.md](assets/template.md)
+### 3. Infrastructure Layer Tasks
+
+외부 의존성에서 태스크 도출:
+
+| 외부 의존성 | 태스크 유형 | 예시 |
+|-------------|-------------|------|
+| 데이터 영속화 | Repository 구현 | `JpaOrderRepository` |
+| 외부 API 연동 | Adapter 구현 | `TossPaymentAdapter` |
+| 메시징 시스템 | Publisher/Consumer 구현 | `KafkaOrderEventPublisher` |
+| 캐싱 | Cache Adapter 구현 | `RedisProductCacheAdapter` |
+
+### 4. API Layer Tasks
+
+사용자 인터페이스에서 태스크 도출:
+
+| 인터페이스 요소 | 태스크 유형 | 예시 |
+|-----------------|-------------|------|
+| API 엔드포인트 | Controller 생성 | `OrderController` |
+| 요청 데이터 | Request DTO 정의 | `CreateOrderRequest` |
+| 응답 데이터 | Response DTO 정의 | `OrderResponse` |
+| 에러 응답 | Exception Handler 정의 | `OrderExceptionHandler` |
+
+## Output Format
+
+태스크는 다음 형식으로 출력한다:
+
+```markdown
+## 개발 태스크 목록
+
+### 구현 순서
+[권장 구현 순서와 의존성 설명]
+
+---
+
+### Domain Layer Tasks
+
+#### Entities
+| ID | 태스크 | 설명 | 선행 태스크 |
+|----|--------|------|-------------|
+| D-E-001 | `Order` Entity 생성 | 주문 도메인 객체 | - |
+
+#### Value Objects
+| ID | 태스크 | 설명 | 선행 태스크 |
+|----|--------|------|-------------|
+| D-V-001 | `Money` VO 생성 | 금액 값 객체 | - |
+
+#### Domain Services
+| ID | 태스크 | 설명 | 선행 태스크 |
+|----|--------|------|-------------|
+| D-S-001 | `PriceCalculator` 생성 | 가격 계산 서비스 | D-E-001, D-V-001 |
+
+#### Domain Events
+| ID | 태스크 | 설명 | 선행 태스크 |
+|----|--------|------|-------------|
+| D-EV-001 | `OrderPlaced` 이벤트 정의 | 주문 생성 이벤트 | D-E-001 |
+
+---
+
+### Application Layer Tasks
+
+#### Use Cases
+| ID | 태스크 | 설명 | 선행 태스크 |
+|----|--------|------|-------------|
+| A-UC-001 | `CreateOrderUseCase` 생성 | 주문 생성 유스케이스 | D-E-001, A-P-001 |
+
+#### Commands & Results
+| ID | 태스크 | 설명 | 선행 태스크 |
+|----|--------|------|-------------|
+| A-C-001 | `CreateOrderCommand` 정의 | 주문 생성 입력 | - |
+
+#### Ports
+| ID | 태스크 | 설명 | 선행 태스크 |
+|----|--------|------|-------------|
+| A-P-001 | `OrderRepository` Port 정의 | 주문 저장소 인터페이스 | D-E-001 |
+
+#### Event Handlers
+| ID | 태스크 | 설명 | 선행 태스크 |
+|----|--------|------|-------------|
+| A-EH-001 | `OrderPlacedHandler` 생성 | 주문 생성 이벤트 처리 | D-EV-001 |
+
+---
+
+### Infrastructure Layer Tasks
+
+#### Repository Implementations
+| ID | 태스크 | 설명 | 선행 태스크 |
+|----|--------|------|-------------|
+| I-R-001 | `JpaOrderRepository` 구현 | JPA 기반 주문 저장소 | A-P-001 |
+
+#### External Adapters
+| ID | 태스크 | 설명 | 선행 태스크 |
+|----|--------|------|-------------|
+| I-A-001 | `PaymentAdapter` 구현 | 결제 시스템 연동 | A-P-002 |
+
+#### Event Publishers
+| ID | 태스크 | 설명 | 선행 태스크 |
+|----|--------|------|-------------|
+| I-EP-001 | `OrderEventPublisher` 구현 | 주문 이벤트 발행 | D-EV-001 |
+
+---
+
+### API Layer Tasks
+
+#### Controllers
+| ID | 태스크 | 설명 | 선행 태스크 |
+|----|--------|------|-------------|
+| P-C-001 | `OrderController` 생성 | 주문 API 컨트롤러 | A-UC-001 |
+
+#### DTOs
+| ID | 태스크 | 설명 | 선행 태스크 |
+|----|--------|------|-------------|
+| P-D-001 | `CreateOrderRequest` 정의 | 주문 생성 요청 DTO | - |
+
+---
+
+### Summary
+
+| 레이어 | 태스크 수 |
+|--------|-----------|
+| Domain | N |
+| Application | N |
+| Infrastructure | N |
+| API | N |
+| **Total** | **N** |
+```
+
+## Task ID Convention
+
+- `D-E-XXX`: Domain Entity
+- `D-V-XXX`: Domain Value Object
+- `D-S-XXX`: Domain Service
+- `D-EV-XXX`: Domain Event
+- `A-UC-XXX`: Application Use Case
+- `A-C-XXX`: Application Command/Result
+- `A-P-XXX`: Application Port
+- `A-EH-XXX`: Application Event Handler
+- `I-R-XXX`: Infrastructure Repository
+- `I-A-XXX`: Infrastructure Adapter
+- `I-EP-XXX`: Infrastructure Event Publisher
+- `P-C-XXX`: Presentation Controller
+- `P-D-XXX`: Presentation DTO
+
+## Dependency Ordering
+
+태스크 의존성 정렬 원칙:
+
+1. **Domain First**: 도메인 레이어 태스크를 먼저 배치
+2. **Inside-Out**: 내부 레이어에서 외부 레이어 순으로
+3. **Port Before Adapter**: Port 정의 후 구현체 태스크
+4. **Event Before Handler**: 이벤트 정의 후 핸들러 태스크
+
+```
+Domain (Entity, VO)
+  → Domain (Service, Event)
+    → Application (Port, Command)
+      → Application (UseCase, Handler)
+        → Infrastructure (Repository, Adapter)
+          → API (Controller, DTO)
+```
+
+## Quality Checklist
+
+태스크 생성 후 검증:
+
+- [ ] 모든 도메인 개념이 태스크로 변환되었는가?
+- [ ] 모든 비즈니스 플로우가 Use Case로 표현되었는가?
+- [ ] 외부 의존성마다 Port가 정의되었는가?
+- [ ] 태스크 간 의존성이 명확한가?
+- [ ] 순환 의존성이 없는가?
+- [ ] 구현 순서가 의존성을 존중하는가?
+
+## Reference
+
+상세 태스크 분류 기준: [references/task-categories.md](references/task-categories.md)
