@@ -2,7 +2,7 @@
 name: writing-backend-code
 description: Provides Clean Architecture and DDD-based backend code writing guidance. Used for backend code implementation, new feature development, Use Case design, domain modeling, test code writing, and infrastructure layer implementation. Maintains code quality and architectural consistency in Java/Kotlin backend projects.
 context: fork
-agent: backend-architect
+agent: be-architect
 user-invocable: true
 ---
 

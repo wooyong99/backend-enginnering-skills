@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Skill(example-skills:skill-creator)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(zip:*)",
+      "Bash(powershell -Command:*)",
+      "Skill(commit-message)",
+      "Skill(skill-creator)",
+      "Skill(spec-to-tasks)",
+      "Bash(git -C \"D:/MEGAGEN/work/backend-enginnering-skills\" status)",
+      "Bash(git -C \"D:/MEGAGEN/work/backend-enginnering-skills\" diff)",
+      "Bash(git -C \"D:/MEGAGEN/work/backend-enginnering-skills\" log --oneline -5)"
+    ]
+  }
+}
