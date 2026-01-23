@@ -1,6 +1,8 @@
 ---
 name: clean-architecture-backend
 description: Automated architectural decision-making and code implementation based on Clean Architecture, DDD, and object-oriented design. Use when implementing new features ("XX 기능 구현해줘"), reviewing/refactoring code ("이 코드 검토해줘", "리팩토링해줘"), or answering architecture questions ("어느 레이어에 배치해야 해?", "의존성이 맞나?"). Automatically determines layer placement, dependency direction, component boundaries, and responsibility distribution for Java/Kotlin and TypeScript/Node.js projects.
+context: fork
+agent: ddd-architecture-orchestrator
 ---
 
 # Clean Architecture Backend Developer
@@ -10,6 +12,7 @@ Automates architectural decisions and implements backend code following Clean Ar
 ## Overview
 
 This skill extends beyond simple code generation by actively making architectural decisions:
+
 - **Layer Placement**: Automatically determines which layer code belongs to
 - **Dependency Direction**: Ensures dependencies flow toward stability
 - **Component Boundaries**: Suggests module and package structures
@@ -116,6 +119,7 @@ Needs variation → Polymorphism
 **[ARCHITECTURE_DECISION_FRAMEWORK.md](references/ARCHITECTURE_DECISION_FRAMEWORK.md)**
 
 Automated decision-making framework including:
+
 - Layer placement decision tree
 - Dependency direction verification algorithm
 - Component boundary suggestions
@@ -129,6 +133,7 @@ Automated decision-making framework including:
 **[RESPONSIBILITY_DRIVEN_DESIGN.md](references/RESPONSIBILITY_DRIVEN_DESIGN.md)**
 
 Responsibility and collaboration patterns:
+
 - GRASP principles (Information Expert, Creator, Controller, Low Coupling, High Cohesion)
 - Responsibility assignment process
 - Collaboration design
@@ -141,6 +146,7 @@ Responsibility and collaboration patterns:
 **[DEPENDENCY_MANAGEMENT.md](references/DEPENDENCY_MANAGEMENT.md)**
 
 Comprehensive dependency control:
+
 - Dependency Rule enforcement
 - Dependency Inversion Principle (DIP)
 - Metrics (Afferent/Efferent Coupling, Instability, Abstractness)
@@ -154,6 +160,7 @@ Comprehensive dependency control:
 **[CODE_REVIEW_CHECKLIST.md](references/CODE_REVIEW_CHECKLIST.md)**
 
 Systematic code review guide:
+
 - Architecture compliance checks
 - Domain model validation
 - Responsibility and collaboration review
@@ -168,6 +175,7 @@ Systematic code review guide:
 **[DOMAIN_DESIGN_GUIDE.md](../writing-backend-code/references/DOMAIN_DESIGN_GUIDE.md)**
 
 Detailed domain modeling patterns:
+
 - Entity design patterns
 - Value Object implementation
 - Aggregate boundaries
@@ -183,6 +191,7 @@ Detailed domain modeling patterns:
 **User**: "사용자가 주문을 취소할 수 있게 해주세요"
 
 **Automated Analysis**:
+
 ```
 1. Domain Concepts:
    - "주문" (Order) - Entity
@@ -307,6 +316,7 @@ class OrderService {
 ```
 
 **Automated Analysis**:
+
 ```
 Issues Detected:
 
@@ -592,19 +602,19 @@ class OrderJpaAdapter implements OrderRepository {
 ```typescript
 // Domain - Pure TypeScript
 export class Order {
-    // No NestJS decorators
+  // No NestJS decorators
 }
 
 // Application - NestJS OK
 @Injectable()
 export class PlaceOrderUseCase {
-    // Port interfaces
+  // Port interfaces
 }
 
 // Infrastructure - NestJS + TypeORM
 @Injectable()
 export class OrderTypeOrmAdapter implements OrderRepository {
-    // TypeORM entities separate from domain
+  // TypeORM entities separate from domain
 }
 ```
 
@@ -626,6 +636,7 @@ Your implementation is successful when:
 **This skill actively makes decisions for you.**
 
 You don't just generate code—you:
+
 1. Analyze the request
 2. Make architectural decisions
 3. Apply design principles

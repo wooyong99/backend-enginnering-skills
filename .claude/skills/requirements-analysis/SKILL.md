@@ -1,6 +1,8 @@
 ---
 name: requirements-analysis
 description: Analyze and interpret requirements from a Domain-Driven Design perspective, generating normalized documentation. Use when users request "요구사항 분석해줘", "도메인 모델링해줘", "기획서 검토해줘", "이 기능 설계해줘", or when analyzing specification documents, planning documents, or feature requests that need domain concept extraction and structured analysis before implementation.
+context: fork
+agent: ddd-architecture-orchestrator
 ---
 
 # Requirements Analysis Skill
@@ -16,17 +18,20 @@ Analyze requirements from a Domain-Driven Design (DDD) and Clean Architecture pe
 When a requirements analysis request arrives, first understand:
 
 **Input Type Identification:**
+
 - Specification document (PDF, Markdown, Word)
 - Verbal/chat-based requirements
 - Feature request or planning document
 - Legacy code analysis request
 
 **Scope Clarification:**
+
 - Which business area does this cover?
 - What is the expected level of detail?
 - Are there existing domain models to reference?
 
 **Context Gathering:**
+
 - Read any provided documents completely
 - Identify key business concepts from the text
 - Note ambiguous or unclear requirements
@@ -36,12 +41,14 @@ When a requirements analysis request arrives, first understand:
 Identify and map bounded contexts:
 
 **Questions to Answer:**
+
 - What are the distinct business capabilities?
 - Which concepts should be isolated?
 - What are the context boundaries?
 - How do contexts relate to each other?
 
 **Output:**
+
 - Context map showing relationships
 - Responsibility definition for each context
 - Integration patterns between contexts (Customer-Supplier, Anti-Corruption Layer, etc.)
@@ -53,18 +60,21 @@ Refer to [DDD_PATTERNS.md](references/DDD_PATTERNS.md) for bounded context patte
 Extract and define the domain vocabulary:
 
 **Process:**
+
 1. Extract nouns from business descriptions → Entity/Value Object candidates
 2. Extract verbs from business actions → Domain method names
 3. Identify state transitions → Entity lifecycle
 4. Define policies and rules → Domain Services
 
 **Guidelines:**
+
 - Use business terms, not technical terms
 - Map business verbs to domain methods (e.g., "주문하다" → `Order.place()`)
 - Avoid ambiguous terms like "process", "handle", "manage"
 - Document term definitions clearly
 
 See [UBIQUITOUS_LANGUAGE_GUIDE.md](references/UBIQUITOUS_LANGUAGE_GUIDE.md) for detailed guidance on:
+
 - Extracting terms from business conversations
 - Classifying terms into Entity/Value Object/Service
 - Creating verb mappings
@@ -77,12 +87,14 @@ Design the core domain model:
 #### 4.1 Entity Identification
 
 **Criteria:**
+
 - Has unique identity
 - Has lifecycle
 - Needs tracking
 - State changes over time
 
 **Design:**
+
 - Define identifier type and generation strategy
 - List attributes (prefer Value Objects over primitives)
 - Define business methods (use business verbs)
@@ -92,12 +104,14 @@ Design the core domain model:
 #### 4.2 Value Object Identification
 
 **Criteria:**
+
 - Identified by attributes only
 - Immutable
 - Replaceable
 - Represents measurement, quantity, or description
 
 **Design:**
+
 - Define attributes
 - Specify validation rules
 - Define business operations (return new instances)
@@ -106,12 +120,14 @@ Design the core domain model:
 #### 4.3 Aggregate Design
 
 **Principles:**
+
 - Keep aggregates small (prefer single entity)
 - Define clear transactional boundaries
 - Reference other aggregates by ID only
 - Designate Aggregate Root
 
 **Design:**
+
 - Identify Aggregate Root
 - List contained entities
 - Define consistency boundaries
@@ -120,16 +136,19 @@ Design the core domain model:
 #### 4.4 Domain Service Identification
 
 **Use When:**
+
 - Logic spans multiple entities
 - Operation doesn't naturally belong to any entity
 - Stateless business rules or calculations
 
 **Design:**
+
 - Clear purpose statement
 - List dependencies (entities, value objects)
 - Define methods with business-meaningful names
 
 Consult [DOMAIN_DESIGN_GUIDE.md](references/DOMAIN_DESIGN_GUIDE.md) (from writing-backend-code skill) for comprehensive guidance on:
+
 - Entity design patterns
 - Value Object implementation
 - Aggregate boundaries
@@ -140,6 +159,7 @@ Consult [DOMAIN_DESIGN_GUIDE.md](references/DOMAIN_DESIGN_GUIDE.md) (from writin
 Define business scenarios:
 
 **For Each Use Case:**
+
 - Purpose: What business goal?
 - Actor: Who performs it?
 - Preconditions: What must be true before?
@@ -150,6 +170,7 @@ Define business scenarios:
 - Business rules: Constraints and policies
 
 **Output Format:**
+
 - Use case table with ID, name, actor, priority
 - Detailed flow description for each
 
@@ -158,12 +179,14 @@ Define business scenarios:
 Identify and document business rules:
 
 **Policy Documentation:**
+
 - Policy name and purpose
 - Conditions and outcomes (if X, then Y)
 - Examples with input/output
 - Special cases and exceptions
 
 **Types:**
+
 - Validation rules
 - Calculation algorithms
 - Decision policies
@@ -174,12 +197,14 @@ Identify and document business rules:
 Identify significant domain events:
 
 **Criteria:**
+
 - Represents something that happened (past tense)
 - Triggers actions in other contexts
 - Needs to be recorded
 - Has business significance
 
 **Design:**
+
 - Event name (past tense: OrderPlaced, PaymentCompleted)
 - When it occurs
 - Payload (IDs and essential data only, not entire entities)
@@ -204,6 +229,7 @@ Start with the template from [assets/requirements-analysis-template.md](assets/r
 9. **Next Steps section** - Validation needs and priorities
 
 **Output Format:**
+
 - Structured Markdown document
 - Save to appropriate location (ask user if unclear)
 - Follow the template structure for consistency
@@ -213,17 +239,20 @@ Start with the template from [assets/requirements-analysis-template.md](assets/r
 After generating the document:
 
 **Validate:**
+
 - Are all terms clearly defined?
 - Are business rules complete?
 - Are boundaries clear?
 - Are there contradictions?
 
 **Identify Gaps:**
+
 - List unclear requirements
 - Note missing information
 - Highlight assumptions
 
 **Recommend Next Steps:**
+
 - Prioritize implementation (Core > Support > Generic)
 - Suggest technical validations
 - List items needing stakeholder clarification
@@ -284,6 +313,7 @@ This skill provides comprehensive reference documentation:
 ### [DDD_PATTERNS.md](references/DDD_PATTERNS.md)
 
 Strategic and tactical DDD patterns including:
+
 - Bounded Context patterns and relationships
 - Entity, Value Object, Aggregate patterns
 - Domain Service and Repository patterns
@@ -295,6 +325,7 @@ Strategic and tactical DDD patterns including:
 ### [UBIQUITOUS_LANGUAGE_GUIDE.md](references/UBIQUITOUS_LANGUAGE_GUIDE.md)
 
 Complete guide to discovering and defining domain language:
+
 - Term extraction process
 - Classification guidelines (Entity vs Value Object vs Service)
 - Verb mapping patterns
@@ -306,6 +337,7 @@ Complete guide to discovering and defining domain language:
 ### [ANALYSIS_TEMPLATE.md](references/ANALYSIS_TEMPLATE.md)
 
 Detailed template structure with:
+
 - Section-by-section guidance
 - Field descriptions
 - Example formats
@@ -315,6 +347,7 @@ Detailed template structure with:
 ### [DOMAIN_DESIGN_GUIDE.md](writing-backend-code/references/DOMAIN_DESIGN_GUIDE.md)
 
 Comprehensive domain modeling guide (from writing-backend-code skill):
+
 - Entity design patterns with code examples
 - Value Object implementation
 - Aggregate design principles
