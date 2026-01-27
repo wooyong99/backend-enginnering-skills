@@ -1,0 +1,16 @@
+{
+  "name": "engineering-workflow",
+  "description": "Analyze requirements, understand codebases, develop features, refactor legacy code, generate tests, and produce documentation across the engineering workflow.",
+  "author": {
+    "name": "wooyong99",
+    "email": "wulovesk12@gmail.com"
+  },
+  "keywords": [
+    "engineering",
+    "workflow",
+    "code",
+    "development",
+    "documentation",
+    "testing"
+  ]
+}

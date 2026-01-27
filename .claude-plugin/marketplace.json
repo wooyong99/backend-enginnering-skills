@@ -1,0 +1,16 @@
+{
+  "name": "wooyong-plugins",
+  "description": "A collection of plugins developed by wooyong.",
+  "owner": {
+    "name": "wooyong",
+    "email": "wulovesk12@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "engineering-workflow",
+      "description": "Analyze requirements, understand codebases, develop features, refactor legacy code, generate tests, and produce documentation across the engineering workflow.",
+      "source": "./plugins/engineering-workflow",
+      "strict": true
+    }
+  ]
+}
